@@ -65,8 +65,8 @@ describe('Locale', function(){
 			'guten': 'tag'
 		};
 
-		Locale.define('de-DE', 'Date', obj);
-		Locale.use('de-DE');
+		Locale.define('de-fo', 'Date', obj);
+		Locale.use('de-fo');
 
 		expect(Locale.get('Date')).toEqual(obj);
 	});
