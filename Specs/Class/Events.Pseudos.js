@@ -1,8 +1,8 @@
 /*
 ---
-name: Events.Pseudos
-requires: ~
-provides: ~
+name: Events.Pseudos Tests
+requires: [More/Events.Pseudos]
+provides: [Events.Pseudos.Tests]
 ...
 */
 

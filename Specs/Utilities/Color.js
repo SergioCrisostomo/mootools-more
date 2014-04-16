@@ -1,8 +1,8 @@
 /*
 ---
-name: Color
-requires: ~
-provides: ~
+name: Color Tests
+requires: [More/Color]
+provides: [Color.Tests]
 ...
 */
 

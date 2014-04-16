@@ -1,8 +1,8 @@
 /*
 ---
-name: Object.Extras
-requires: ~
-provides: ~
+name: Object.Extras Tests
+requires: [More/Object.Extras]
+provides: [Object.Extras.Tests]
 ...
 */
 

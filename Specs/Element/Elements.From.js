@@ -1,8 +1,8 @@
 /*
 ---
-name: Elements.From
-requires: ~
-provides: ~
+name: Elements.From Tests
+requires: [More/Elements.From]
+provides: [Elements.From.Tests]
 ...
 */
 

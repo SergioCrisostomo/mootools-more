@@ -1,8 +1,11 @@
 /*
 ---
 name: Fx.Slide
-requires: ~
-provides: ~
+requires:
+  - Core/Fx
+  - Core/Element.Style
+  - MooTools.More
+provides: [Fx.Slide]
 ...
 */
 

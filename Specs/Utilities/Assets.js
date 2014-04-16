@@ -1,8 +1,8 @@
 /*
 ---
-name: Assets
-requires: ~
-provides: ~
+name: Assets Tests
+requires: [More/Assets]
+provides: [Assets.Tests]
 ...
 */
 

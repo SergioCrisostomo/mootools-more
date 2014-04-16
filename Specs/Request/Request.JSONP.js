@@ -1,8 +1,8 @@
 /*
 ---
-name: Request.JSONP
-requires: ~
-provides: ~
+name: Request.JSONP Tests
+requires: [More/Request.JSONP]
+provides: [Request.JSONP.Tests]
 ...
 */
 

@@ -1,8 +1,11 @@
 /*
 ---
 name: HtmlTable.Zebra
-requires: ~
-provides: ~
+requires:
+  - HtmlTable
+  - Element.Shortcuts
+  - Class.refactor
+provides: [HtmlTable.Zebra]
 ...
 */
 

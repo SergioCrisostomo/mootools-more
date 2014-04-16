@@ -1,8 +1,8 @@
 /*
 ---
-name: Chain.Wait
-requires: ~
-provides: ~
+name: Chain.Wait Tests
+requires: [More/Chain.Wait]
+provides: [Chain.Wait.Tests]
 ...
 */
 

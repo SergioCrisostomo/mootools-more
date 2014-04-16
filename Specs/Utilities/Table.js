@@ -1,8 +1,8 @@
 /*
 ---
-name: Table
-requires: ~
-provides: ~
+name: Table Tests
+requires: [More/Table]
+provides: [Table.Tests]
 ...
 */
 
