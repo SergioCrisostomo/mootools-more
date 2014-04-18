@@ -47,13 +47,16 @@ provides: [Drag]
         y: windowSize.y
     }];
 
+    // check if drag box stays inside the container's border
     function borderPolice(container, drag) {
         var clean = true;
-        if (drag.x < container.x || (drag.x + dragSize.x) > container.x + containerSize.x) clean = false;
-        if (drag.y < container.y || (drag.y + dragSize.y) > container.y + containerSize) clean = false;
+        if (drag.x < container.x || (drag.x + dragSize.x) > (container.x + containerSize.x)) clean = false;
+        if (drag.y < container.y || (drag.y + dragSize.y) > (container.y + containerSize)) clean = false;
         return clean;
     }
-    function getCenter(pos){
+
+    // function to format for Syn
+    function getCoord(pos){
         return {
             pageX: pos.x,
             pageY: pos.y
@@ -70,16 +73,17 @@ provides: [Drag]
                 onDrag: function () {
                     var containerPosition = this.container.getPosition();
                     var dragPosition = this.element.getPosition();
-                    // the veridict
+                    // check if drag element keeps inside the container
                     if (!borderPolice(containerPosition, dragPosition)) borderFlag = false;
                 }
             });
             var cI = 0;
+            // drag the element from its center to the 4 corners of the screen
             var walkThru = setInterval(function () {
                 var nextCorner = corners[cI];
                 Syn.drag({
-                    from: getCenter($('drag').getPosition()),
-                    to: getCenter(nextCorner)
+                    from: getCoord($('drag').getPosition()),
+                    to: getCoord(nextCorner)
                 }, 'drag');
                 cI++;
                 if (cI == corners.length) clearInterval(walkThru);
