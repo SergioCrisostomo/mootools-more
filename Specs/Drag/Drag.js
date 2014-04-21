@@ -53,24 +53,29 @@ provides: [Drag]
             center: center
         };
     }
+    
+    function returnPosition(els){
+        return els.map(function(el){ return el.element.getPosition(); });
+    }
 
     function dragAround(center, dragMe) {
+        var size = dragMe.getSize();
         var points = [
             center, {
-                x: 0,
-                y: 0
+                x: 0 + size.x,
+                y: 0 + size.y
             },
             center, {
-                x: 0,
-                y: windowSize.y
+                x: 0 + size.x,
+                y: windowSize.y - size.y
             },
             center, {
-                x: windowSize.x,
-                y: 0
+                x: windowSize.x - size.x,
+                y: 0 + size.x
             },
             center, {
-                x: windowSize.x,
-                y: windowSize.y
+                x: windowSize.x - size.x,
+                y: windowSize.y - size.x
             },
             center
         ];
@@ -81,18 +86,85 @@ provides: [Drag]
             var dragTo = points[cI];
             Syn.drag({
                 from: getCoord(dragCenterPos(dragMe)),
-                to: getCoord(dragTo)
+                to: getCoord(dragTo),
+                duration: 50
             }, dragMe);
             cI++;
             if (cI == points.length) {
                 clearInterval(walkThru);
                 if (dragMe.getPosition().x != originalPosition[0] || dragMe.getPosition().y != originalPosition[1]) suiteDone = true;
-                else throw 'Element to be dragged didn\'t move!';
+                else suiteDone = 0;
             }
         }, 80);
     }
 
     describe('Drag', function () {
+
+        it('should be able to drag the colored boxes around. The links should let you enable and disable dragging', function () {
+            suiteDone = false;
+            var environment = $(document.body);
+
+            // add elements
+            new Element('a', {
+                'id': 'enable',
+                'html': 'Enable drag '
+            }).inject(environment);
+
+            new Element('a', {
+                'id': 'disable',
+                'html': 'Disable drag'
+            }).inject(environment);
+          
+            for (var i = 0; i < 3; i++){
+                var color = [0,0,0];
+                color[i] = 9;
+                new Element('div', {
+                    id: 'box' + i,
+                    styles: {
+                        width: '31px',
+                        height: '31px',
+                        background: '#' + color.join(''),
+                        position: 'relative'
+                    }
+                }).inject(environment);
+            }
+            
+            var draggers = [$('box0').makeDraggable(), $('box1').makeDraggable({
+                modifiers: {x: 'right', y: 'bottom'},
+                invert: true
+            }), $('box2').makeDraggable()];
+            $('enable').addEvent('click', function(){
+                draggers.each(function(drag){ drag.attach(); });
+            });
+            $('disable').addEvent('click', function(){
+                draggers.each(function(drag){ drag.detach(); });
+            });
+            
+            // js
+            var container = containerData($(document.body));
+            draggers.each(function(el){ dragAround(container.center, el.element); });
+            waits(1000);
+
+            runs(function () {
+                if(suiteDone){
+                    $('disable').fireEvent('click');
+                    draggers.each(function(el){ dragAround({x: 100, y: 100}, el.element); });
+                } else throw 'disable drag did not fire';
+            });
+            waits(1000);
+
+            runs(function () {
+                expect(!suiteDone).toBeTruthy();
+                $('enable').fireEvent('click');
+                draggers.each(function(el){ dragAround({x: 200, y: 200}, el.element); });
+            });
+
+            waits(1000);
+            runs(function () {
+                expect(suiteDone).toBeTruthy();
+                environment.empty();
+            });
+        });
 
         it('should drag the box inside the parent without crossing the border', function () {
             suiteDone = false;
