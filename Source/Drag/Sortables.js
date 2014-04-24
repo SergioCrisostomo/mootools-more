@@ -124,7 +124,15 @@ var Sortables = new Class({
 			});
 		}
 
-		return clone.inject(this.list).setPosition(element.getPosition(element.getOffsetParent()));
+		var oP = element.getOffsetParent();
+		var position = element.getPosition(oP);
+		if (oP.getStyle('position') == 'fixed') {
+			var scroll = { w: window.getScroll(), oP: oP.getScroll()};
+			position.x += scroll.oP.x - scroll.w.x;
+			position.y += scroll.oP.y - scroll.w.y;
+		}
+
+		return clone.inject(this.list).setPosition(position);
 	},
 
 	getDroppables: function(){
