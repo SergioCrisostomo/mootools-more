@@ -54,7 +54,7 @@ describe('Array.sum', function(){
 	});
 
 	it('should start concatenation if any item is not a number', function(){
-		expect([1, 2, 'a', 3].sum()).toEqual('3a21');
+		expect([3, 'a', 1, 3, 2].sum()).toEqual('3a132');
 	});
 
 });
