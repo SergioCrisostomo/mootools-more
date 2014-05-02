@@ -39,10 +39,8 @@ Array.implement({
 	},
 
 	sum: function(){
-		var result = 0, l = this.length;
-		if (l){
-			while (l--) result += this[l];
-		}
+		var result = 0;
+		this.forEach(function(n){ result += n; });
 		return result;
 	},
 
