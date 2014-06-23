@@ -40,15 +40,68 @@ describe('String.pad', function(){
 
 });
 
-describe('String.stripTags', function(){
+describe('String.stripTags', function () {
 
-	it('should remove all tags from an html string', function(){
-		expect('<b>test<a>another</a><br><hr/><div>thing</div></b>'.stripTags()).toEqual('testanotherthing');
-	});
+    var testStrings = [{
+        tag: 'img',
+        str: '<img src="test.png" />',
+        stripped: '',
+        contentsTrue: '<img src="test.png" />'
+    }, {
+        tag: 'img',
+        str: '<img src="test.png" >',
+        stripped: '',
+        contentsTrue: '<img src="test.png" >'
+    }, {
+        tag: 'h1',
+        str: '<h1>Header 1</h1>',
+        stripped: 'Header 1',
+        contentsTrue: '<h1>Header 1</h1>'
+    }, {
+        tag: 'br',
+        str: 'Line<br />next line<br/>',
+        stripped: 'Linenext line',
+        contentsTrue: '<br /><br/>'
+    }, {
+        tag: 'span',
+        str: '<span>some text</span>',
+        stripped: 'some text',
+        contentsTrue: '<span>some text</span>'
+    }, {
+        tag: '',
+        str: '<b>test<a>another</a><br><hr/><div>thing</div></b>',
+        stripped: 'testanotherthing',
+        contentsTrue: '<br><hr/><b>test<a>another</a><div>thing</div></b>'
+    },{
+        tag: '',
+        str: '<b>This</b> is a <i>phrase </i><br/><div>and</div> this <b>should not be stripped</b>',
+        stripped: 'This is a phrase and this should not be stripped',
+        contentsTrue: '<br/><b>This</b><i>phrase </i><div>and</div><b>should not be stripped</b>'
+    }, {
+        tag: '',
+        str: 'i like cookies',
+        stripped: 'i like cookies',
+        contentsTrue: ''
+    }, {
+        tag: '',
+        str: '1 < 5 5 > 1',
+        stripped: '1 < 5 5 > 1',
+        contentsTrue: ''
+    }];
 
-	it('should leave a string w/o html alone', function(){
-		expect('i like cookies'.stripTags()).toEqual('i like cookies');
-	});
+    testStrings.each(function (testStr) {
+        it('should remove desired tags, and only them, from an html string', function () {
+            var result = testStr.str.stripTags(testStr.tag);
+            expect(result).toEqual(testStr.stripped);
+        });
+    });
+
+    testStrings.each(function (testStr) {
+        it('should retrieve a array with the stripped contents', function () {
+            var results = testStr.str.stripTags(testStr.tag, true);
+            expect(results.join('')).toEqual(testStr.contentsTrue);
+        });
+    });
 
 });
 

@@ -94,11 +94,24 @@ var walk = function(string, replacements){
 	return result;
 };
 
-var getRegexForTag = function(tag, contents){
-	tag = tag || '';
-	var regstr = contents ? "<" + tag + "(?!\\w)[^>]*>([\\s\\S]*?)<\/" + tag + "(?!\\w)>" : "<\/?" + tag + "([^>]+)?>",
-		reg = new RegExp(regstr, "gi");
-	return reg;
+var isSelfClosingTag = function (tag) {
+    var selfClosingTags = ['area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img', 'input', 'keygen', 'link', 'meta', 'param', 'source', 'track', 'wbr'];
+    return~selfClosingTags.indexOf(tag) ? true : false;
+};
+var cleanTag = new RegExp('([<>\/])', 'g');
+var getRegexForTag = function (tag, contents) {
+
+    tag = tag || '';
+    var regstr = {}, reg = [], isSCT = isSelfClosingTag(tag);
+
+    if (!tag || isSCT) regstr.isSelfClosingTag = tag ? "(<\\s?" + tag + "[^>]*>)" : "(<(?!\\s)[\\/a-z]*[^>]+>)";
+    if (tag && !isSCT) regstr.closingTag = contents ? "(<" + tag + ".*\/" + tag + ">)" : "<\/?" + tag + "([^>]+)?>";
+    if (!tag) regstr.closingTag = "(<[^\\/]*\\/[a-z]{1,}>)";
+
+    if (regstr.closingTag) reg.push(new RegExp(regstr.closingTag, "gi"));
+    if (regstr.isSelfClosingTag) reg.push(new RegExp(regstr.isSelfClosingTag, "gi"));
+
+    return reg;
 };
 
 String.implement({
@@ -128,9 +141,40 @@ String.implement({
 		return this.match(getRegexForTag(tag, contents)) || [];
 	},
 
-	stripTags: function(tag, contents){
-		return this.replace(getRegexForTag(tag, contents), '');
-	},
+    stripTags: function (tag, contents) {
+		// TODO getTags and stripTags do the same when contents is true. Maybe remove the contents from stripTags and use it only in getTags. Also change the docs.
+        var string = String.from(this);
+        var regex = getRegexForTag(tag, contents);
+
+        if (!contents) return string.replace((regex[1] || regex[0]), '');
+
+        var matches = [];
+        if (regex.length > 1) {
+
+            // first pass for self-closing tags
+            var firstMatches = string.match(regex[1]);
+            if (firstMatches) {
+
+                firstMatches = firstMatches.filter(function (m) {
+                    var cleanMatch = m.replace(cleanTag, '');
+                    cleanMatch = cleanMatch.split(' ').filter(function(m){ return m != ''});
+                    return isSelfClosingTag(cleanMatch[0]);
+                });
+
+                if (firstMatches.length) matches.push(firstMatches);
+                var tempString = string;
+                firstMatches.each(function (m) {
+                    tempString = tempString.replace(m, '');
+                });
+
+                // second pass for normal tags and content inside them
+                matches.push(tempString.match(regex[0]));
+            }
+        } else {
+            matches.push(string.match(regex[0]));
+        }
+        return matches.flatten();
+    },
 
 	tidy: function(){
 		return walk(this, tidy);
