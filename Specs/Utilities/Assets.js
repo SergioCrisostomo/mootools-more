@@ -39,8 +39,8 @@ describe('Assets', function(){
 		it('should load a css file and fire the load event', function(){
 
 			var load = jasmine.createSpy('load');
-
-			var myCSS = Asset.css('base/Tests/Specs/assets/Assets.css.test.css', {
+			var externalURL = 'https://rawgit.com/mootools/mootools-more/master/Tests/Specs/assets/Assets.css.test.css';
+			var myCSS = Asset.css(externalURL, {
 				id: 'myStyle',
 				title: 'myStyle',
 				onload: function(){
@@ -53,8 +53,8 @@ describe('Assets', function(){
 			runs(function(){
 				expect(myCSS.get('tag')).toEqual('link');
 				expect(myCSS.id).toEqual('myStyle');
-				// Current implementation of assets uses the load event which only works in IE/Opera
-				// expect(load).toHaveBeenCalledWith(myCSS);
+				// Current implementation of assets uses the load event which only works in IE/Opera (2011)
+				expect(load).toHaveBeenCalledWith(myCSS);
 				myCSS.destroy();
 			});
 
