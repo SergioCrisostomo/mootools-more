@@ -46,7 +46,7 @@ describe('Assets', function(){
 				onLoad: function(){
 					alert('loaded');
 					var border = $('moologo').getStyle('border');
-					alert(norder);
+					alert(border);
 					load(this);
 				}
 			});
