@@ -10,7 +10,7 @@ describe('Scroller', function(){
     var inner, wrapper, myScroller, body = $(document.body);
 
     beforeEach(function(){
-        inner = new Element('div', {
+        wrapper = new Element('div', {
             id: 'myScroll',
             styles: {
                 width: 300,
@@ -18,13 +18,13 @@ describe('Scroller', function(){
                 overflow: 'scroll'
             }
         });
-        inner.inject(body);
-        wrapper = new Element('div', {
+        wrapper.inject(body);
+        inner = new Element('div', {
             styles: {
                 width: 600,
                 height: 400
             }
-        }).inject(inner);
+        }).inject(wrapper);
 
         myScroller = new Scroller('myScroll', {
             area: Math.round(window.getWidth() / 10)
@@ -38,8 +38,9 @@ describe('Scroller', function(){
     });
 
     it('should initialize', function(){
-        expect(myScroller.element).toEqual(inner);
+        expect(myScroller.element).toEqual(wrapper);
     });
+
     it('should be error free', function(){
         var error;
         try{
