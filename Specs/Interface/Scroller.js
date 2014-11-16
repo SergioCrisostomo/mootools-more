@@ -41,14 +41,8 @@ describe('Scroller', function(){
         expect(myScroller.element).toEqual(wrapper);
     });
 
-    it('should be error free', function(){
-        var error;
-        try{
-            myScroller.scroll();
-        }catch(e){
-            error = e;
-        }
-        expect(error).toBe(undefined);
+    it('should be error free when calling .scroll()', function(){
+        expect(myScroller.scroll()).toBe(undefined);
     });
 
 });
