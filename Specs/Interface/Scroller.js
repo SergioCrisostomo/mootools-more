@@ -38,4 +38,9 @@ describe('Scroller', function(){
 		}
 		expect(error).toBe(undefined);
 	});
+
+	inner.destroy();
+	wrapper.destroy();
+	myScroller = null;
+
 });
