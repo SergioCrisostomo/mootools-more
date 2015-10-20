@@ -10,7 +10,7 @@ license: MIT-style license
 authors:
   - Arian Stolwijk
   - Martin Lundgren
-  - Ole Tøsse Kolvik
+  - Ole TÃ¸sse Kolvik
 
 requires:
   - Locale

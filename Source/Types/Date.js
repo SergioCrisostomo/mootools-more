@@ -117,8 +117,9 @@ Date.implement({
 	},
 
 	getDayOfYear: function(){
-		return (Date.UTC(this.get('year'), this.get('mo'), this.get('date') + 1)
-			- Date.UTC(this.get('year'), 0, 1)) / Date.units.day();
+		var current = Date.UTC(this.get('year'), this.get('mo'), this.get('date') + 1);
+		var yearStart = Date.UTC(this.get('year'), 0, 1);
+		return (current - yearStart) / Date.units.day();
 	},
 
 	setDay: function(day, firstDayOfWeek){

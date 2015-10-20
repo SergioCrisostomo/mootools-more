@@ -8,6 +8,22 @@ module.exports = function(grunt) {
 	var pullRequest = process.env.TRAVIS_PULL_REQUEST;
 
 	grunt.initConfig({
+		jshint: {
+			all: ['Source/**/*.js'],
+			options: {
+				curly: false,
+				eqeqeq: false,
+				eqnull: false,
+				"-W041": false, // https://github.com/jshint/jshint/issues/1366
+				"-W058": true, // https://github.com/jshint/jshint/issues/1357
+				evil: true, // eval warning
+				lastsemic: true,
+				loopfunc: true,
+				nonew: false,
+				laxbreak: true, // line breaks in complex ternaries
+				scripturl: true // iFrameshim url
+			},
+		},
 		'connect': {
 			testserver: {
 				options: {
@@ -221,8 +237,8 @@ module.exports = function(grunt) {
 
 	});
 
-	var compatBuild = ['clean', 'packager:all', 'packager:specs'];
-	var nocompatBuild = ['clean', 'packager:morenocompat', 'packager:specs-nocompat'];
+	var compatBuild = ['clean', 'jshint', 'packager:all', 'packager:specs'];
+	var nocompatBuild = ['clean', 'jshint', 'packager:morenocompat', 'packager:specs-nocompat'];
 
 	var tasks = travisBuild == 'default' ? compatBuild : nocompatBuild;
 	tasks =  pullRequest != 'false' ? tasks.concat('karma:continuous') : tasks.concat('karma:sauceTask');
