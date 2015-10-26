@@ -40,7 +40,7 @@ HtmlTable Method: constructor
 
 ### Events
 
-* sort - callback executed when a column is sorted; passed the *tbody* and the index of the column sorted.
+* sort - callback executed when a column is sorted; passed the *tbody*, the index of the column sorted and *reversed* to know the sorting direction.
 
 ### Note
 
