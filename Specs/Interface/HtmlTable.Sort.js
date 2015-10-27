@@ -133,6 +133,11 @@ describe('HtmlTable.Sort', function(){
 					status = reversed;
 				}
 			});
+			
+			function getText(){
+				// because of IE9-
+				return tbody.get('text').split(/\n\s\t/g).join('');
+			}
 
 			it('should set function arguments', function(){
 				expect(args.length).toEqual(3);
@@ -144,10 +149,10 @@ describe('HtmlTable.Sort', function(){
 			it('should correctly set the direction onSort event', function(){
 				table.sort(0, false);
 				expect(status).toEqual('asc');
-				expect(tbody.get('text')).toEqual('abc');
+				expect(getText()).toEqual('abc');
 				table.sort(0, true);
 				expect(status).toEqual('desc');
-				expect(tbody.get('text')).toEqual('cba');
+				expect(getText()).toEqual('cba');
 			});
 
 		});
