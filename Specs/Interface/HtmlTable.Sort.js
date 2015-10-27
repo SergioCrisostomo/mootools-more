@@ -6,6 +6,12 @@ provides: [HtmlTable.Sort.Tests]
 ...
 */
 describe('HtmlTable.Sort', function(){
+	
+	function getText(rows){
+		return Array.map(rows, function(item){
+			return item.cells[0].get('text') || item.cells[0].getElement('input').get('value');
+		});
+	}
 
   it('should not step on prior this.bind declarations', function () {
     var table = new HtmlTable();
@@ -22,9 +28,7 @@ describe('HtmlTable.Sort', function(){
 				rows: data.map(function(item){return [item];})
 			});
 
-			return Array.map(table.sort(0, false).body.rows, function(item){
-				return item.cells[0].get('text') || item.cells[0].getElement('input').get('value');
-			});
+			return getText(table.sort(0, false).body.rows);
 		};
 
 		describe('date', function(){
@@ -133,11 +137,6 @@ describe('HtmlTable.Sort', function(){
 					status = reversed;
 				}
 			});
-			
-			function getText(){
-				// because of IE9-
-				return tbody.get('text').split(/\n\s\t/g).join('');
-			}
 
 			it('should set function arguments', function(){
 				expect(args.length).toEqual(3);
@@ -149,10 +148,10 @@ describe('HtmlTable.Sort', function(){
 			it('should correctly set the direction onSort event', function(){
 				table.sort(0, false);
 				expect(status).toEqual('asc');
-				expect(getText()).toEqual('abc');
+				expect(getText(tbody.rows)).toEqual(['a', 'b', 'c']);
 				table.sort(0, true);
 				expect(status).toEqual('desc');
-				expect(getText()).toEqual('cba');
+				expect(getText(tbody.rows)).toEqual(['c', 'b', 'a']);
 			});
 
 		});
