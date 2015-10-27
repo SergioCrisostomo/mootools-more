@@ -120,6 +120,38 @@ describe('HtmlTable.Sort', function(){
 
 		});
 
+		describe('onSort event', function(){
+			var status, args, tbody;
+			var table = new HtmlTable({
+				sortable: true,
+				headers: ['col'],
+				parsers: ['string'],
+				rows: [['a'], ['c'], ['b']],
+				onSort: function(body, index, reversed){
+					args = arguments;
+					tbody = body;
+					status = reversed;
+				}
+			});
+
+			it('should set function arguments', function(){
+				expect(args.length).toEqual(3);
+				expect(args[0].tagName.toLowerCase()).toEqual('tbody');
+				expect(typeof args[1]).toEqual('number');
+				expect(typeof args[2]).toEqual('string');
+			});
+			
+			it('should correctly set the direction onSort event', function(){
+				table.sort(0, false);
+				expect(status).toEqual('asc');
+				expect(tbody.get('text')).toEqual('abc');
+				table.sort(0, true);
+				expect(status).toEqual('desc');
+				expect(tbody.get('text')).toEqual('cba');
+			});
+
+		});
+
 		describe('string', function(){
 
 			it('should sort a list alphabetically', function(){
