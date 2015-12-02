@@ -75,7 +75,7 @@ Keyboard.implement({
 });
 
 Keyboard.rebind = function(newKeys, shortcuts){
-	Array.from(shortcuts).each(function(shortcut){
+	Array.convert(shortcuts).each(function(shortcut){
 		shortcut.getKeyboard().removeEvent(shortcut.keys, shortcut.handler);
 		shortcut.getKeyboard().addEvent(newKeys, shortcut.handler);
 		shortcut.keys = newKeys;
