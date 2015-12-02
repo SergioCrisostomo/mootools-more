@@ -28,7 +28,7 @@
   },
   "homepage": "http://mootools.net",
   "devDependencies": {
-    "mootools-core": "https://github.com/mootools/mootools-core/tarball/master",
+    "mootools-core": "git://github.com/SergioCrisostomo/mootools-core.git#Array.from",
     "grunt": "~0.4.2",
     "grunt-cli": "~0.1.13",
     "grunt-mootools-packager": "~0.3.0",
