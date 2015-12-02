@@ -331,7 +331,7 @@ Form.Validator.adders = {
 	},
 
 	addAllThese : function(validators){
-		Array.from(validators).each(function(validator){
+		Array.convert(validators).each(function(validator){
 			this.add(validator[0], validator[1]);
 		}, this);
 	},
