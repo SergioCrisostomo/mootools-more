@@ -36,7 +36,7 @@ Keyboard.implement({
 		this._shortcuts = this._shortcuts || [];
 		this._shortcutIndex = this._shortcutIndex || {};
 
-		shortcut.getKeyboard = Function.from(this);
+		shortcut.getKeyboard = Function.convert(this);
 		shortcut.name = name;
 		this._shortcutIndex[name] = shortcut;
 		this._shortcuts.push(shortcut);
